@@ -42,15 +42,14 @@ public class Task {
 
     @Override
     public String toString() {
+
         // Create a calendar object that will convert the date and time value in milliseconds to date.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm");
 
-        return "Task{" +
-                "title='" + title + '\'' +
-                ", priority=" + priority +
-                ", time=" + formatter.format(time) +
-                '}';
+        return title + "\n" +
+                "priority=" + priority + "\n" +
+                "time=" + formatter.format(time);
     }
 }
