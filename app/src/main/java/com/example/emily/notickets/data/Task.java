@@ -43,7 +43,6 @@ public class Task {
     @Override
     public String toString() {
 
-
         // Create a calendar object that will convert the date and time value in milliseconds to date.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
