@@ -4,10 +4,14 @@ package com.example.emily.notickets;
 //8-30-2018
 //throwaway demo app
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -15,8 +19,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.emily.notickets.data.Task;
 
@@ -34,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
     );
     public static final String CHANNEL_ID = "1";
     public static final int NOTIFICATION_ID = 1;
+
+
+    private AlarmManager alarmManager;
+    private BroadcastReceiver mReceiver;
+    private PendingIntent pendingIntent1;
 
 
     private TextView textViewTaskList;
@@ -69,9 +80,17 @@ public class MainActivity extends AppCompatActivity {
             taskListForShowing.append(task.toString() + "\n\n\n");
         }
         textViewTaskList.setText(taskListForShowing);
+
+        RegisterAlarmBroadcast();
+
     }
 
-    public void sendNotification(View view){
+    public void sendNotification(View view) {
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 30000,
+                pendingIntent1);
+    }
+
+    public void sendNotification(){
 
         Intent openAppIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, openAppIntent, 0);
@@ -95,5 +114,28 @@ public class MainActivity extends AppCompatActivity {
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(NOTIFICATION_ID, mBuilder.build());
 
+
+
+    }
+
+    private void RegisterAlarmBroadcast(){
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(MainActivity.class.getSimpleName(), "Alarming");
+                Toast.makeText(context, "Hi!", Toast.LENGTH_SHORT).show();
+                sendNotification();
+            }
+        };
+        registerReceiver(mReceiver, new IntentFilter("com.example.emily.notickets"));
+        pendingIntent1 = PendingIntent.getBroadcast(this, 0,
+                new Intent("com.example.emily.notickets"), 0);
+        alarmManager = (AlarmManager)(this.getSystemService(Context.ALARM_SERVICE));
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
     }
 }
