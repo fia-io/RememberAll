@@ -1,11 +1,21 @@
 <resources>
     <string name="app_name">NoTickets</string>
     <string name="notification_button_text">Send Notification</string>
+    <string name="set_alarm_date">Set Alarm Date</string>
+    <string name="set_alarm_time">Set Alarm Time</string>
+    <string name="enter_description">Enter task description</string>
+    <string name="sched_alarm">Schedule Alarm</string>
 
     <!-- could theoretically have multiple channels so users can control notifications -->
     <string name="channel_name">ALL_NOTIFICATIONS</string>
     <string name="channel_description">everything</string>
+
+    <string name="time_picker" translatable="false">time_picker</string>
+    <string name="date_picker" translatable="false">date_picker</string>
     
     <string name="notification_title">Do This</string>
     <string name="notification_text">You are notified</string>
+
+    <string name="something_not_set">Date and Time must be set</string>
+    <string name="alarm_set">Alarm has been set</string>
 </resources>
