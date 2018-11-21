@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -10,32 +9,83 @@
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp">
 
-    <Button
-        android:id="@+id/btn_send_notification"
-        android:textSize="16sp"
-        android:padding="8dp"
-        android:background="@color/colorAccent"
-        android:text="@string/notification_button_text"
-        android:onClick="sendNotification"
+    <EditText
+        android:id="@+id/et_task_desc"
+        android:textSize="32sp"
+        android:hint="@string/enter_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
-    <TextView
-        android:id="@+id/tv_task_list"
+    <Button
+        android:id="@+id/btn_set_notification_date"
+        android:textSize="16sp"
         android:padding="8dp"
+        android:background="@color/colorAccent"
+        android:text="@string/set_alarm_date"
+        android:onClick="showDatePickerDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        app:layout_constraintTop_toBottomOf="@id/et_task_desc"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_set_notification_time"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:background="@color/colorAccent"
+        android:text="@string/set_alarm_time"
+        android:onClick="showTimePickerDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toBottomOf="@id/et_task_desc"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/tv_alarm_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:textSize="32sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_send_notification" />
+        app:layout_constraintTop_toBottomOf="@id/btn_set_notification_date" />
+
+    <TextView
+        android:id="@+id/tv_alarm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textSize="32sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_set_notification_time" />
 
 
+    <Button
+        android:id="@+id/btn_add_alarm"
+        android:textSize="16sp"
+        android:text="@string/sched_alarm"
+        android:background="@color/colorPrimaryLight"
+        android:onClick="setAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_alarm_date"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_task_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_alarm"
+        android:layout_margin="8dp"
+        android:textSize="16sp"/>
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>
