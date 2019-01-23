@@ -1,4 +1,4 @@
-package com.example.emily.notickets;
+package io.fia.rememberall;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.emily.notickets.Utils;
+package io.fia.rememberall.Utils;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog;
@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import com.example.emily.notickets.R;
+import io.fia.rememberall.R;
 
 import org.w3c.dom.Text;
 

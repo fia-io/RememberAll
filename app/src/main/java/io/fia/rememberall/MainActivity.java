@@ -1,4 +1,4 @@
-package com.example.emily.notickets;
+package io.fia.rememberall;
 
 //Emily Stuckey
 //8-30-2018
@@ -27,9 +27,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.emily.notickets.Utils.DatePickerFragment;
-import com.example.emily.notickets.Utils.TimePickerFragment;
-import com.example.emily.notickets.data.Task;
+import io.fia.rememberall.Utils.DatePickerFragment;
+import io.fia.rememberall.Utils.TimePickerFragment;
+import io.fia.rememberall.data.Task;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -199,9 +199,9 @@ public class MainActivity extends AppCompatActivity {
                 sendNotification();
             }
         };
-        registerReceiver(mReceiver, new IntentFilter("com.example.emily.notickets"));
+        registerReceiver(mReceiver, new IntentFilter("io.fia.rememberall"));
         pendingIntent1 = PendingIntent.getBroadcast(this, 0,
-                new Intent("com.example.emily.notickets"), 0);
+                new Intent("io.fia.rememberall"), 0);
         alarmManager = (AlarmManager)(this.getSystemService(Context.ALARM_SERVICE));
     }
 

@@ -1,4 +1,4 @@
-package com.example.emily.notickets;
+package io.fia.rememberall;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

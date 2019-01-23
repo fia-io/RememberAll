@@ -1,4 +1,4 @@
-package com.example.emily.notickets.Utils;
+package io.fia.rememberall.Utils;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.app.TimePickerDialog;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.example.emily.notickets.R;
+import io.fia.rememberall.R;
 
 import java.text.DateFormat;
 import java.util.Calendar;

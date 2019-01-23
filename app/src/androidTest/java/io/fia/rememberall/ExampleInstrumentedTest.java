@@ -1,4 +1,4 @@
-package com.example.emily.notickets;
+package io.fia.rememberall;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.emily.notickets", appContext.getPackageName());
+        assertEquals("io.fia.rememberall", appContext.getPackageName());
     }
 }
