@@ -53,10 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
 
-    private AlarmManager alarmManager;
-    private BroadcastReceiver mReceiver;
-    private PendingIntent pendingIntent1;
-
     private TextView textViewTaskList;
     private TextView textViewDate;
     private TextView textViewTime;
@@ -82,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
         updateTaskList();
 
-//        RegisterAlarmBroadcast();
 
     }
 
@@ -113,11 +108,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-/*    public void sendNotification(View view) {
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 30000,
-                pendingIntent1);
-    }
-*/
+
     public static void sendNotification(Context context, Class<?> cls, String description){
 
         Log.d(MainActivity.class.getSimpleName(), "sendNotification firing");
@@ -150,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRadioButtonClicked(View view){
-        boolean checked = ((RadioButton)view).isChecked();
 
         if (view.getId() == R.id.rb_single_alarm){
             alarmRepeats = false;
@@ -220,28 +210,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-/*
-    private void RegisterAlarmBroadcast(){
-        mReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d(MainActivity.class.getSimpleName(), "Alarming");
-                Toast.makeText(context, "Hi!", Toast.LENGTH_SHORT).show();
-                sendNotification();
-            }
-        };
-        registerReceiver(mReceiver, new IntentFilter("io.fia.rememberall"));
-        pendingIntent1 = PendingIntent.getBroadcast(this, 0,
-                new Intent("io.fia.rememberall"), 0);
-        alarmManager = (AlarmManager)(this.getSystemService(Context.ALARM_SERVICE));
-    }
-
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(mReceiver);
-        super.onDestroy();
-    }
-    */
 
     public void showTimePickerDialog(View v){
         android.support.v4.app.DialogFragment dialogFragment = new TimePickerFragment();
