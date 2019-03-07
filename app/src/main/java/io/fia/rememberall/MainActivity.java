@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +42,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<Task> taskArrayList = Arrays.asList(
+    private ArrayList<Task> taskArrayList = new ArrayList<>(Arrays.asList(
             new Task("Pay for parking", 1, System.currentTimeMillis()),
             new Task("Wave to Svava", 3, System.currentTimeMillis()),
             new Task("Scratch Trima's belly", 4, System.currentTimeMillis())
-    );
+    ));
     public static final String CHANNEL_ID = "1";
     public static final int NOTIFICATION_ID = 1;
     public static final String TASK = "task";
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String taskToAlarm;
 
+    private boolean alarmRepeats;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +78,20 @@ public class MainActivity extends AppCompatActivity {
         textViewDate = findViewById(R.id.tv_alarm_date);
         textViewTime = findViewById(R.id.tv_alarm_time);
         editTextDesc = findViewById(R.id.et_task_desc);
+        alarmRepeats = false;
 
+        updateTaskList();
+
+//        RegisterAlarmBroadcast();
+
+    }
+
+    public void updateTaskList(){
         StringBuilder taskListForShowing = new StringBuilder();
         for (Task task : taskArrayList){
             taskListForShowing.append(task.toString() + "\n\n\n");
         }
         textViewTaskList.setText(taskListForShowing);
-
-//        RegisterAlarmBroadcast();
 
     }
 
@@ -139,6 +149,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onRadioButtonClicked(View view){
+        boolean checked = ((RadioButton)view).isChecked();
+
+        if (view.getId() == R.id.rb_single_alarm){
+            alarmRepeats = false;
+        } else if (view.getId() == R.id.rb_repeating_alarm){
+            alarmRepeats = true;
+        }
+    }
 
     //TODO: enforce future date/time
     public void setAlarm(View view){
@@ -170,13 +189,25 @@ public class MainActivity extends AppCompatActivity {
 
             final long alarmTime = reminderTime;
 
+            taskArrayList.add(new Task(taskToAlarm, 4, reminderTime));
+            updateTaskList();
+
+
             Intent intent = new Intent(this, AlarmReceiver.class);
             intent.putExtra(TASK, taskToAlarm);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                    500, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    taskToAlarm.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+            if (alarmRepeats){
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                        alarmTime,
+                        AlarmManager.INTERVAL_DAY,
+                        pendingIntent);
+            }
+            else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+            }
 
             Log.d(LOG_TAG, "alarm set for " + fulltime);
             long timeToWait = (alarmTime - System.currentTimeMillis())/60000;
