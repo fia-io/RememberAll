@@ -141,11 +141,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRadioButtonClicked(View view){
-
+        boolean checked = ((RadioButton) view).isChecked();
         if (view.getId() == R.id.rb_single_alarm){
-            alarmRepeats = false;
+            if (checked) {
+                alarmRepeats = false;
+            }
         } else if (view.getId() == R.id.rb_repeating_alarm){
-            alarmRepeats = true;
+            if (checked) {
+                alarmRepeats = true;
+            }
         }
     }
 
@@ -179,7 +183,10 @@ public class MainActivity extends AppCompatActivity {
 
             final long alarmTime = reminderTime;
 
-            taskArrayList.add(new Task(taskToAlarm, 4, reminderTime));
+            Task newTask = new Task(taskToAlarm, 4, reminderTime);
+
+
+            taskArrayList.add(newTask);
             updateTaskList();
 
 
@@ -187,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(TASK, taskToAlarm);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                    taskToAlarm.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    newTask.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
             if (alarmRepeats){
                 alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,

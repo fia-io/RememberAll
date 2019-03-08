@@ -4,8 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class Task {
+    int ID;
     String title;
     int priority;
     long time;
@@ -15,6 +17,8 @@ public class Task {
         this.priority = priority;
         this.time = time;
     }
+
+
 
     public String getTitle() {
         return title;
@@ -51,5 +55,13 @@ public class Task {
         return title + "\n" +
                 "priority=" + priority + "\n" +
                 "time=" + formatter.format(time);
+    }
+
+    //TODO: we may need an id field to enforce uniqueness
+    //this is only to generate a code for alarms, so
+    //doesn't need to be *too* unique
+    @Override
+    public int hashCode() {
+        return title.hashCode();
     }
 }

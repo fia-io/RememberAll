@@ -69,15 +69,15 @@
     <RadioGroup
         android:id="@+id/rg_single_repeat"
         app:layout_constraintTop_toBottomOf="@id/tv_alarm_date"
-
+        android:checkedButton="@id/rb_single_alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/rb_single_alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/single_alarm"
             android:layout_marginRight="32dp"
             android:onClick="onRadioButtonClicked"/>
