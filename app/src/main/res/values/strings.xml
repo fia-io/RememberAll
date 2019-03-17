@@ -18,6 +18,7 @@
 
     <string name="something_not_set">Date and Time must be set</string>
     <string name="single_alarm">Only Once</string>
-    <string name="repeating_alarm">Every Day</string>
+    <string name="repeat_daily_alarm">Daily</string>
+    <string name="repeat_weekly_alarm">Weekly</string>
     <string name="alarm_set">Alarm has been set</string>
 </resources>
