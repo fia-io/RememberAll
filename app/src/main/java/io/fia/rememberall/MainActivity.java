@@ -5,25 +5,20 @@ package io.fia.rememberall;
 //throwaway demo app
 
 import android.app.AlarmManager;
-import android.app.DialogFragment;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -38,29 +33,27 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Task> taskArrayList = new ArrayList<>(Arrays.asList(
-            new Task("Pay for parking", 1, System.currentTimeMillis()),
-            new Task("Wave to Svava", 3, System.currentTimeMillis()),
-            new Task("Scratch Trima's belly", 4, System.currentTimeMillis())
-    ));
+    private ArrayList<Task> taskArrayList = new ArrayList<>();
     public static final String CHANNEL_ID = "1";
     public static final int NOTIFICATION_ID = 1;
     public static final String TASK = "task";
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
+    private static final long INTERVAL_WEEK = 7 * AlarmManager.INTERVAL_DAY;
 
     private TextView textViewTaskList;
     private TextView textViewDate;
     private TextView textViewTime;
     private EditText editTextDesc;
+    private RadioButton radioButtonOnce;
+    private RadioButton radioButtonDaily;
+    private RadioButton radioButtonWeekly;
 
     private String taskToAlarm;
 
-    private boolean alarmRepeats;
+    private int repeatInterval;
 
 
     @Override
@@ -74,7 +67,11 @@ public class MainActivity extends AppCompatActivity {
         textViewDate = findViewById(R.id.tv_alarm_date);
         textViewTime = findViewById(R.id.tv_alarm_time);
         editTextDesc = findViewById(R.id.et_task_desc);
-        alarmRepeats = false;
+        radioButtonOnce = findViewById(R.id.rb_single_alarm);
+        radioButtonDaily = findViewById(R.id.rb_repeat_daily_alarm);
+        radioButtonWeekly = findViewById(R.id.rb_repeat_weekly_alarm);
+
+        repeatInterval = 0;
 
         updateTaskList();
 
@@ -144,11 +141,15 @@ public class MainActivity extends AppCompatActivity {
         boolean checked = ((RadioButton) view).isChecked();
         if (view.getId() == R.id.rb_single_alarm){
             if (checked) {
-                alarmRepeats = false;
+                repeatInterval = 0;
             }
-        } else if (view.getId() == R.id.rb_repeating_alarm){
+        } else if (view.getId() == R.id.rb_repeat_daily_alarm){
             if (checked) {
-                alarmRepeats = true;
+                repeatInterval = 1;
+            }
+        } else if (view.getId() == R.id.rb_repeat_weekly_alarm){
+            if (checked){
+                repeatInterval = 7;
             }
         }
     }
@@ -196,24 +197,28 @@ public class MainActivity extends AppCompatActivity {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
                     newTask.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-            if (alarmRepeats){
+            if (repeatInterval == 0){
+                alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+            }
+            else if (repeatInterval == 1){
                 alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                         alarmTime,
                         AlarmManager.INTERVAL_DAY,
                         pendingIntent);
             }
-            else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+            else if (repeatInterval == 7){
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                        alarmTime,
+                        INTERVAL_WEEK,
+                        pendingIntent);
             }
-
-            Log.d(LOG_TAG, "alarm set for " + fulltime);
-            long timeToWait = (alarmTime - System.currentTimeMillis())/60000;
-            Log.d(LOG_TAG, "Should be " + timeToWait + " minutes from now");
 
             Toast.makeText(this, getResources().getString(R.string.alarm_set), Toast.LENGTH_SHORT).show();
             editTextDesc.setText("");
             textViewTime.setText("");
             textViewDate.setText("");
+            radioButtonOnce.setChecked(true);
+
         }
 
     }
